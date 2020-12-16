@@ -8,9 +8,6 @@ ENV SCALA_VERSION=2.11.12
 ENV SBT_VERSION=0.13.15
 ENV SCALA_HOME=/usr/share/scala
 
-ARG http_proxy=http://admin:admin@10.41.241.111:30019
-ARG https_proxy=http://admin:admin@10.41.241.111:30019
-
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
     apk add --no-cache bash curl jq tar && \
     cd "/tmp" && \
