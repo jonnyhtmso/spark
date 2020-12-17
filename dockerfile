@@ -9,7 +9,32 @@ ENV SBT_VERSION=0.13.15
 ENV SCALA_HOME=/usr/share/scala
 
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
-    apk add --no-cache bash curl jq tar && \
+    apk add --no-cache bash curl jq tar xz \
+		bluez-dev \
+		bzip2-dev \
+		coreutils \
+		dpkg-dev dpkg \
+		expat-dev \
+		findutils \
+		gcc \
+		gdbm-dev \
+		libc-dev \
+		libffi-dev \
+		libnsl-dev \
+		libtirpc-dev \
+		linux-headers \
+		make \
+		ncurses-dev \
+		openssl-dev \
+		pax-utils \
+		readline-dev \
+		sqlite-dev \
+		tcl-dev \
+		tk \
+		tk-dev \
+		util-linux-dev \
+		xz-dev \
+		zlib-dev && \
     cd "/tmp" && \
     wget --no-verbose "https://downloads.typesafe.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.tgz" && \
     tar xzf "scala-${SCALA_VERSION}.tgz" && \
@@ -23,8 +48,12 @@ RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
 #Scala instalation
 RUN export PATH="/usr/local/sbt/bin:$PATH" &&  apk update && apk add ca-certificates wget tar && mkdir -p "/usr/local/sbt" && wget -qO - --no-check-certificate "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | tar xz -C /usr/local/sbt --strip-components=1 && sbt sbtVersion
 
-# Python instalation
-RUN apk add --no-cache python3 && ln -s $(command -v python3) /usr/bin/python 
+# python
+RUN  cd /tmp && wget --no-verbose https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tar.xz && \
+    tar -xJvf Python-3.7.9.tar.xz && cd Python-3.7.9 && \
+    ./configure --prefix=/usr/local/python/ && make clean; make && make install && \
+    ln -s /usr/local/python/bin/python3 /usr/bin/python
+
 # Note: this is needed when you use Python 3.3 or greater
 ENV PYTHONHASHSEED 1
 
